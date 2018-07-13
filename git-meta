@@ -93,15 +93,18 @@ def dump_database(args):
     data = load_metadata(args)
     entries = data.keys()
     entries.sort()
-    print('%s %s %s %s %s' %( 'mode'.center(6), 'mtime'.center(19), 'uid'.center(6), 'gid'.center(6), 'file' ))
+    #print('%s %s %s %s %s' %( 'mode'.center(6), 'mtime'.center(19), 'uid'.center(6), 'gid'.center(6), 'file' ))
+    print('%-6s %-19s %-6s %-6s %s' %( '# mode', 'mtime', 'uid', 'gid', 'file' ))
     for entry in entries:
         row = ['%.6o' % data[entry]['mode']]
         if data[entry].has_key('mtime'):
             row.append(datetime.datetime.fromtimestamp(data[entry]['mtime']).strftime('%Y-%m-%d %H:%M:%S'))
-        if data[entry].has_key('uid'):
-            row.append('%6s' % data[entry]['uid'])
-        if data[entry].has_key('gid'):
-            row.append('%6s' % data[entry]['gid'])
+        #if data[entry].has_key('uid'):
+        #    row.append('%6s' % data[entry]['uid'])
+        row.append('%-6s' % (data[entry].has_key('uid') and data[entry]['uid'] or "-"))
+        #if data[entry].has_key('gid'):
+        #    row.append('%6s' % (data[entry]['gid'] or "-"))
+        row.append('%-6s' % (data[entry].has_key('gid') and data[entry]['gid'] or "-"))
         if os.path.isfile(entry):
             row.append(entry)
         else:
